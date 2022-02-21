@@ -1,0 +1,107 @@
+---
+title: "Ex2-DataFrames in R"
+output: html_document
+---
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+rm(list=ls())
+col1=c(1,2,3)
+col2=c("A","B","C")
+col3=c("yes","no","no")
+df=data.frame(col1,col2,col3)
+print(dim(df))
+str(df)
+names(df)
+summary(df)
+df$col4 <- 0
+df['col5'] <- c("hi","hello","wow")
+df$col4
+
+df
+df$col5 <- NULL
+df1=subset(df,select = c(col1,col2))
+df1=subset(df,select=-col2)
+df$col6 <- rowSums(df[c(1,4)])
+which.max(df$col6)
+df[,c(1:4)]#view all rows but from 1 to 4 cols, if specific cols then 1,4
+temp_df=df[-2]#store excluding 2nd column
+row.names(temp_df)=df$col2
+temp_df
+boolv <- temp_df["col1"]>1
+boolv
+row.names(temp_df)[boolv]# return all row names whose col1 is greater than 1
+
+```
+```{r}
+p=c("a",NA,"B")
+any(is.na(p))
+is.na(p)
+sum(is.na(p))
+p <- na.omit(p)
+p
+```
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+```{r}
+as_tibble(col1) #glimpse(col1)
+```
+
+```{r}
+
+data("mtcars")
+cars <- mtcars
+filter(cars,mpg>25,hp>30)
+distinct(cars)
+```
+
+
+```{r}
+sample_frac(cars,0.2)
+```
+```{r}
+cars %>%
+  filter(mpg>25) %>%
+  slice_sample(n=2)
+```
+
+```{r}
+unique(cars$cyl)
+
+```
+
+```{r}
+slice(cars,16:20)
+```
+
+```{r}
+select(cars,"cyl")
+cars %>%
+  filter(mpg>18) %>%
+  select(mpg,cyl)
+```
+
+```{r}
+names(cars)
+select(cars,disp:wt)
+```
+
+```{r}
+arrange(cars,desc(mpg)) ##ordering
+```
+```{r}
+cars %>%
+mutate(cars,newvar=disp+hp) %>%
+  filter(mpg>25,disp>90)%>%
+  select(disp,cyl,hp,newvar)
+```

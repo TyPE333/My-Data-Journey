@@ -1,0 +1,156 @@
+---
+title: "DATAFRAMES_LAB2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Name: Avireddy NVSRK Rohan
+### Reg.no: 19BCE1180
+
+##SECTION 2A
+1. Create a data frame by considering 5 students and 4 courses (C1,C2, C3, C4). Each score has a maximum score of 30. If a student is absent for CAT1 of a course, the mark entry is 0 for that course. (Have 0 entry also in the data)
+
+```{r}
+names=c("JOHN","SARAH","SAM","CHARLES","JAMES")
+C1=c(25,0,28,29,24)
+C2=c(0,22,28,26,20)
+C3=c(21,20,25,22,26)
+C4=c(24,29,28,28,30)
+stud=data.frame(names,C1,C2,C3,C4)
+```
+2. View the contents of the data frame.
+```{r}
+stud
+View(stud)
+```
+3. Find the total marks of each student.
+
+4. Append a column to include the total marks of the students and view the data frame.
+```{r}
+stud$total=rowSums(stud[c(2:5)])
+stud
+```
+5. Find the maximum total marks and display the name of the participant who scored it.
+```{r}
+stud$names[which.max(stud$total)]
+
+```
+6.Compute the average mark in each course and append it as a new row in the data frame.
+```{r}
+
+stud <- rbind(stud,data.frame(names="average",C1=mean(stud$C1),C2=mean(stud$C2),C3=mean(stud$C3),C4=mean(stud$C4),total=mean(stud$total)))
+stud
+
+```
+Store the details in a comma separated values (csv) file. Also suppress the row numbers.
+```{r}
+
+getwd()
+write.csv(stud,"marks.csv",row.names = FALSE)
+
+```
+##INDEXING AND SLICING
+8. Read the content of recently stored csv file in a data frame and view it.
+```{r}
+my_df=read.csv("marks.csv")
+my_df
+
+```
+9.Access the marks of students in C2 using the column name.
+```{r}
+my_df$C2
+```
+10. Use index number to retrieve the same data.
+```{r}
+my_df[,3]
+```
+11.Extract the marks of third student in C3.
+```{r}
+my_df[3,4]
+```
+12. Extract the marks of the first and second student in all courses.
+```{r}
+my_df[c(1,2),]
+```
+13. Display the names and total marks of all students.
+```{r}
+my_df[,c(1,6)]
+```
+14. Make the column “name” as the row index of the data frame.
+```{r}
+row.names(my_df) <- my_df$names
+my_df
+```
+15. Display the names of the students who were absent for the course C3 during CAT1
+```{r}
+temp <-my_df
+boolv <- temp["C2"]==0
+row.names(temp)[boolv]
+```
+16. Obtain the names whose total marks is below its average.
+```{r}
+bool1 <- temp["total"]<mean(temp$total)
+row.names(temp)[bool1]
+```
+##Ex-2b Basic Operations in data frame
+1. Install the package MASS
+```{r}
+#install.packages("MASS")
+```
+OUTPUT FOR Q1:WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+Installing package into ‘C:/Users/rohan/OneDrive/Documents/R/win-library/4.0’
+(as ‘lib’ is unspecified)
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.0/MASS_7.3-54.zip'
+Content type 'application/zip' length 1189557 bytes (1.1 MB)
+downloaded 1.1 MB
+
+package ‘MASS’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+	C:\Users\rohan\AppData\Local\Temp\Rtmpi4IuXC\downloaded_packages
+	
+2.Import the package MASS.
+	
+```{r}
+library("MASS")
+```
+3. Display the structure of the data survey.
+```{r}
+data("survey")
+survey_data=survey
+str(survey_data)
+```
+4. Check the class and type of the data set survey in MASS.
+```{r}
+class(survey_data)
+typeof(survey_data)
+```
+5. Get the number of rows and columns of the survey data frame.
+```{r}
+nrow(survey_data)
+ncol(survey_data)
+```
+6.Get the dimension of the survey data frame.
+```{r}
+dim(survey_data)
+```
+7. Provide the statistical summary of the data frame.
+```{r}
+summary(survey_data)
+```
+8. Display the column names of the survey data frame
+```{r}
+names(survey_data)
+```
+9. Retrieve the top 3 rows from the data frame.
+```{r}
+head(survey_data,3)
+```
+10. Extract the bottom 2 rows from the data frame.
+```{r}
+tail(survey_data,2)
+```
